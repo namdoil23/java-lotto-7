@@ -1,6 +1,8 @@
 package lotto.view;
 
 import lotto.Lotto;
+import lotto.domain.LottoResult;
+import lotto.domain.Prize;
 import lotto.util.Constants;
 
 import java.util.List;
@@ -8,30 +10,20 @@ import java.util.Map;
 
 public class ResultView {
 
-    public static void printPurchasedLotto(List<Lotto> lottos) {
-
+    public void printPurchasedLottos(List<Lotto> lottos) {
+        System.out.println(lottos.size() + Constants.GET_PURCHASE_LOTTO);
         for (Lotto lotto : lottos) {
-            System.out.println(lotto.getNumbers());
+            System.out.println(lotto);
         }
     }
 
-    public static void printResults(Map<Prize, Integer> result, int purchaseAmount) {
-        System.out.println(Constants.);
-
-        int totalProfit = 0;
-
-        for (Map.Entry<Prize, Integer> entry : result.entrySet()) {
-            Prize prize = entry.getKey();
-
-            int count = entry.getValue();
-
-            System.out.println();
-
-            totalProfit += count * prize.getReward();
+    public void printResults(LottoResult result) {
+        System.out.println("당첨 통계");
+        System.out.println("---");
+        Map<Prize, Integer> resultMap = result.getResult();
+        for (Prize prize : Prize.values()) {
+            System.out.println(prize + " : " + resultMap.get(prize) + "개");
         }
-
-        double profitRatio = (double) totalProfit / purchaseAmount;
-        System.out.println(Constants.,profitRatio);
     }
-
 }
+

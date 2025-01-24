@@ -3,42 +3,22 @@ package lotto.domain;
 import lotto.Lotto;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LottoResult {
-    private final Lotto winningLotto;
+    private final Map<Prize, Integer> result = new HashMap<>();
 
-    private final int bonusNumber;
-
-    private final List<Lotto> purchasedLottos;
-
-    public LottoResult(Lotto winningLotto, int bonusNumber, List<Lotto> purchasedLottos) {
-
-        this.winningLotto = winningLotto;
-
-        this.bonusNumber = bonusNumber;
-
-        this.purchasedLottos = purchasedLottos;
+    public LottoResult() {
+        for (Prize prize : Prize.values()) {
+            result.put(prize, 0);
+        }
     }
 
-    public Map<Prize, Integer> calculateResults(){
-        Map<Prize, Integer> result = new HashMap<>();
+    public void addResult(Prize prize) {
+        result.put(prize, result.get(prize) + 1);
+    }
 
-        for (Lotto lotto : purchasedLottos) {
-
-            int matchCount = (int) lotto.getNumbers().stream()
-                    .filter(winningLotto.getNumbers()::contains)
-                    .count();
-
-            boolean hasBonus  = lotto.getNumbers().contains(bonusNumber);
-
-            Prize prize = Prize.valueOfMatchCount(matchCount,hasBonus);
-            result.put(prize, result.getOrDefault(prize, 0) + 1);
-        }
-
+    public Map<Prize, Integer> getResult() {
         return result;
-
-
     }
 }

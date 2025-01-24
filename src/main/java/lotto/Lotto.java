@@ -1,14 +1,19 @@
 package lotto;
 
+import lotto.domain.LottoNumber;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 public class Lotto {
     private final List<Integer> numbers;
 
     public Lotto(List<Integer> numbers) {
         validate(numbers);
+        validateDuplicates(numbers);
+
         this.numbers = numbers;
     }
 
@@ -20,15 +25,6 @@ public class Lotto {
 
     // TODO: 추가 기능 구현
 
-    private void validateRange(List<Integer> numbers) {
-        for (int number : numbers){
-
-            if (number < 1 || number > 45) {
-                throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
-            }
-        }
-    }
-
     private void validateDuplicates(List<Integer> numbers) {
         Set<Integer> uniqueNumbers = new HashSet<>(numbers);
 
@@ -38,28 +34,22 @@ public class Lotto {
         }
     }
 
-    private void validateBonus(List<Integer> bonusNumbers) {
-        if (bonusNumbers.size() != 1) {
+    public int countMatching(Lotto other) {
 
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 1개여야 합니다.");
-        }
+        return (int) numbers.stream()
+                .filter(other.numbers::contains)
+                .count();
     }
 
-    private static void validateBonusRange(int bonusNumber) {
-        if (bonusNumber < 1 || bonusNumber > 45) {
+    public boolean contains(LottoNumber number) {
 
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.");
-        }
+        return numbers.contains(number);
     }
 
-    private static void validateBonusDuplication(List<Integer> lottoNumbers, int bonusNumber) {
-        if (lottoNumbers.contains(bonusNumber)) {
-
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
-        }
+    @Override
+    public String toString() {
+        return numbers.toString();
     }
 
-    public List<Integer> getNumbers() {
-        return numbers;
-    }
+
 }
